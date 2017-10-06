@@ -331,6 +331,34 @@ class SimplePrinter
     end
 end
 
+class PrettyPrinter #com eixos x e y
+    def print(tabuleiro)
+		m = Matrix.build(tabuleiro.row_count() + 1, tabuleiro.column_count() + 1){0}
+		m.[]=(0, 0, '\\')
+		(1..tabuleiro.row_count()).each do |i|
+			(1..tabuleiro.column_count()).each do|j|
+				m.[]=(i, j, tabuleiro[i - 1, j - 1].valor)
+			end
+		end
+		(1..tabuleiro.row_count()).each do |i|
+			m.[]=(i, 0, i - 1)
+		end
+		(1..tabuleiro.column_count()).each do |i|
+			m.[]=(0, i, i - 1)
+		end
+        (0...m.row_count()).each do |i|
+            (0...m.column_count()).each do|j|
+                if m[i,j].instance_of? Integer
+                    printf("%d ", m[i,j])
+                else
+                    printf("%c ", m[i,j])
+                end
+            end
+            printf("\n")
+        end 
+    end
+end
+
 
 begin
 	puts "MINE SWEEPER\n\n"
@@ -339,7 +367,7 @@ begin
     game = Minesweeper.new(input[0], input[1], input[2])
     game.preenche_tabuleiro
 	puts
-    SimplePrinter.new.print(game.board_state)
+    PrettyPrinter.new.print(game.board_state)
 
     while game.still_playing?
         entrada_valida = false
@@ -371,7 +399,7 @@ begin
         if valid_move or valid_flag
 			Gem.win_platform? ? (system "cls") : (system "clear")
 			puts "MINE SWEEPER\n\n"
-            printer = SimplePrinter.new
+            printer = (rand > 0.5) ? SimplePrinter.new : PrettyPrinter.new
             printer.print(game.board_state)
         end
     end
@@ -381,7 +409,7 @@ begin
         puts "Você venceu!"
     else
         puts "Você perdeu! As minas eram:\n"
-        SimplePrinter.new.print(game.board_state(true))
+        PrettyPrinter.new.print(game.board_state(true))
     end
 rescue SystemExit
 
