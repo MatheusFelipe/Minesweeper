@@ -338,7 +338,8 @@ begin
     input = scanf("%d %d %d")
     game = Minesweeper.new(input[0], input[1], input[2])
     game.preenche_tabuleiro
-    SimplePrinter.new.print(game.tabuleiro)
+	puts
+    SimplePrinter.new.print(game.board_state)
 
     while game.still_playing?
         entrada_valida = false
@@ -367,21 +368,19 @@ begin
                 puts "Tipo de jogada não reconhecida, jogue novamente"
             end
         end until entrada_valida
-		Gem.win_platform? ? (system "cls") : (system "clear")
         if valid_move or valid_flag
+			Gem.win_platform? ? (system "cls") : (system "clear")
 			puts "MINE SWEEPER\n\n"
             printer = SimplePrinter.new
             printer.print(game.board_state)
         end
-		puts "\nControle: "
-		SimplePrinter.new.print(game.tabuleiro)
     end
     
-    puts "Fim do jogo!"
+    puts "Fim do jogo!\n"
     if game.victory?
         puts "Você venceu!"
     else
-        puts "Você perdeu! As minas eram:"
+        puts "Você perdeu! As minas eram:\n"
         SimplePrinter.new.print(game.board_state(true))
     end
 rescue SystemExit
