@@ -114,7 +114,7 @@ class Minesweeper
         pisou = false
         (0...@height).each do |i|
 			(0...@width).each do|j|
-                #conta se o número de células descoberta bate com o número de minas
+                #conta se o número de células cobertas bate com o número de minas
 				if @tabuleiro[i, j].descoberta == false
 					count += 1
 				end
